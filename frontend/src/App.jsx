@@ -4,13 +4,14 @@ import './App.css';
 import NavBar from './components/NavBar/NavBar';
 import SignupForm from './components/SignupForm/SignupForm';
 import LoginForm from './components/LoginForm/LoginForm';
+import Dummy from './Dummy';
 
 function App() {
   return (
     <Router>
       <div className='content'>
         <Routes>
-          <Route exact path="/"></Route>
+          <Route exact path="/" element={<Dummy />} />
           <Route exact path="/register" element={<SignupForm />} />
           <Route exact path="/login" element={<LoginForm />} />
         </Routes>
