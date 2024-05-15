@@ -8,17 +8,12 @@ class User(db.Model):
   password = db.Column(db.String(255), nullable = False)
   contacts = db.relationship('Contact', backref='user', lazy=True)
 
-  def hash_password(password):
-    # Hash the password using SHA-256
-    hashed_password = hashlib.sha256(password.encode()).hexdigest()
-    return hashed_password
-
   def to_json(self):
     return {
       "user_id": self.user_id,
       "username": self.username,
       "email": self.email,
-      "password": self.hash_password(self.password)
+      "password": self.password
     }
   
 class Contact(db.Model):

@@ -4,6 +4,7 @@ from models import Contact, User
 import uuid
 import hashlib
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from datetime import timedelta
 
 # Utility
 def hash_password(password):
@@ -14,10 +15,10 @@ def hash_password(password):
 # User Routes
 @app.route("/api/create_user", methods=["POST"])
 def create_user():
-  user_id = uuid.uuid4()
+  user_id = str(uuid.uuid4())
   username = request.json.get("username")
   email = request.json.get("email")
-  password = request.json.get("password")
+  password = hash_password(request.json.get("password"))
 
   new_user = User(user_id = user_id, username = username, email = email, password = password)
 
@@ -32,24 +33,26 @@ def create_user():
 
 @app.route("/api/login", methods=["POST"])
 def login():
-  username = request.get("username")
-  password = request.get("password")
+  username = request.json.get("username")
+  password = request.json.get("password")
 
   if not username:
     return jsonify({"error": "Missing username"}), 400
+  
+  user = User.query.filter_by(username = username).first()
+  if user == None:
+    return jsonify({"userExists": False}), 401
   
   if not password:
     return jsonify({"error": "Missing password"}), 400
   
   hashed_password = hash_password(password)
   
-  user = User.query.filter_by(username = username).first()
-
-  if user and hashed_password == user.password:
-    access_token = create_access_token(identity=user.user_id)
-    return jsonify({"message": "Login successful", "access_token": access_token}), 200
+  if hashed_password == user.password:
+    access_token = create_access_token(identity=user.user_id, expires_delta=timedelta(hours=1))
+    return jsonify({"access_token": access_token}), 200
   else:
-    return jsonify({"error": "Invalid username or password", "userExists": user != None, "passwordMatching" : hashed_password == user.password}), 401
+    return jsonify({"userExists": True, "passwordMatching" : False}), 401
   
 
 # Checking for duplicates
@@ -57,14 +60,18 @@ def login():
 def get_user_by_email(email):
   user = User.query.filter_by(email = email).first()
   if user:
+    print(user)
     return jsonify({"exists": True}), 200
   return jsonify({"exists": False}), 200
 
 
 @app.route("/api/get_user_username/<string:username>")
-def get_user_by_username(username):
+def get_user_by_username(username=None):
+  print(username != '')
+  print(username != None)
   user = User.query.filter_by(username = username).first()
   if user:
+    print(user)
     return jsonify({"exists": True}), 200
   return jsonify({"exists": False}), 200
 

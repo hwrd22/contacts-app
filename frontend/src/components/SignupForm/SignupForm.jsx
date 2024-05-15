@@ -16,6 +16,12 @@ const SignupForm = () => {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const usernameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+
+  const navigateTo = useNavigate();
+
+  const redirectToLogin = () => {
+    navigateTo('/login');
+  }
   
   const verifyPassword = password => {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{8,}$/;
@@ -74,27 +80,48 @@ const SignupForm = () => {
   const onSubmit = async evt => {
     evt.preventDefault();
 
-    const emailTaken = await fetch(`http://127.0.0.1/api/get_user_email/${email}`);
-    const usernameTaken = await fetch(`http://127.0.0.1/api/get_user_username/${username}`);
+    let error = false;
+
+    let emailTaken = false;
+    if (email) {
+      const emailResponse = await fetch(`http://127.0.0.1:5000/api/get_user_email/${email}`);
+      if (emailResponse.ok) {
+        const emailJson = await emailResponse.json();
+        emailTaken = emailJson.exists;
+      }
+    }
+    let usernameTaken = false;
+    if (username) {
+      const usernameResponse = await fetch(`http://127.0.0.1:5000/api/get_user_username/${username}`);
+      if (usernameResponse.ok) {
+        const usernameJson = await usernameResponse.json();
+        usernameTaken = usernameJson.exists;
+      }
+    }
 
     // Checking email and username validities
     if (!emailRegex.test(email)) {
       setEmailError('Please enter a valid E-Mail address');
+      error = true;
     } else if (emailTaken) {
       setEmailError('The provided E-Mail address is already in use');
+      error = true;
     } else {
       setEmailError('');
     }
     if (!usernameRegex.test(username)) {
       setUsernameError('Your username must be between 3-16 characters and contain no special characters except "-" and/or "_"');
+      error = true;
     } else if (usernameTaken) {
       setUsernameError('The provided username is already taken');
+      error = true;
     } else {
       setUsernameError('');
     }
 
     // If any of the fields below are actually empty
     if (!email || !username || !password || !confirmPassword) {
+      error = true;
       if (!email) {
         setEmailError('Please enter an E-Mail address');
       }
@@ -115,7 +142,7 @@ const SignupForm = () => {
       }
     }
 
-    if (emailError || usernameError || passwordError || confirmPasswordError) {
+    if (error) {
       return;
     }
 
@@ -141,8 +168,8 @@ const SignupForm = () => {
       const data = await response.json();
       alert(data.message);
     } else {
-      const navigateTo = useNavigate();
-      navigateTo('/login');
+      console.log('Success!');
+      redirectToLogin();
     }
   }
 

@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import './LoginForm.css';
 
 const LoginForm = () => {
@@ -10,24 +9,21 @@ const LoginForm = () => {
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const navigateTo = useNavigate();
+
+  const redirectToHome = () => {
+    navigateTo('/');
+  }
+
   const onSubmit = async evt => {
     evt.preventDefault();
 
-    // If any of the fields below are actually empty
-    if (!username || !password) {
-      if (!username) {
-        setUsernameError('Please enter your username');
-      }
-      if (!password) {
-        setPasswordError('Please enter your password');
-      }
-    }
+    let error = false;
 
-    if (usernameError || passwordError) {
-      return;
-    }
+    let uError = '';
+    let pError = '';
 
-    const data = {
+    const userCredentials = {
       username,
       password
     };
@@ -38,19 +34,46 @@ const LoginForm = () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(userCredentials)
     }
 
     const response = await fetch(apiURL, options);
+    const data = await response.json();
 
     if (response.status !== 200) {
-      const data = await response.json();
-      console.log(data);
-      alert(data.message);
-    } else {
-      const navigateTo = useNavigate();
-      navigateTo('/');
+      error = true;
+      if (response.status === 401) {
+        if (!data.userExists) {
+          uError = 'Username does not exist';
+          pError = 'Username does not exist';
+        }
+        else if (!data.passwordMatching) {
+          uError = 'Incorrect password';
+          pError = 'Incorrect password';
+        }
+      }
     }
+    
+    if (!username || !password) {
+      error = true;
+      if (!username) {
+        uError = 'Please enter your username';
+        pError = 'Please enter your username';
+      }
+      if (!password) {
+        pError = 'Please enter your password';
+      }
+    }
+    
+    setUsernameError(uError);
+    setPasswordError(pError);
+
+    if (error) {
+      return;
+    }
+    
+    localStorage.setItem('jwtToken', data.access_token);
+    redirectToHome();
   }
 
   return ( 

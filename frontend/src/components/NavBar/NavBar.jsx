@@ -45,9 +45,7 @@ const NavBar = () => {
       }
       {token && 
       <div className='links'>
-        <Link onClick={handleLogout}>
-          <div className='link'>Log Out</div>
-        </Link>
+        <div onClick={handleLogout} className='link'>Log Out</div>
       </div>
       }
     </nav>
