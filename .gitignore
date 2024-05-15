@@ -1,0 +1,5 @@
+backend/__pycache__/config.cpython-312.pyc
+backend/__pycache__/models.cpython-312.pyc
+backend/instance/contacts-user.db
+frontend/.eslintrc.cjs
+frontend/vite.config.js
