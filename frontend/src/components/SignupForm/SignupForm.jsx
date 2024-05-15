@@ -1,18 +1,149 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import './SignupForm.css';
 
 const SignupForm = () => {
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [emailError, setEmailError] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const usernameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
   
   const verifyPassword = password => {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{8,}$/;
+
+    let failedCriteria = [];
+
+    if (!passwordRegex.test(password)) {
+        if (!/(?=.*[a-z])/.test(password)) {
+            failedCriteria.push("at least one lowercase letter");
+        }
+        if (!/(?=.*[A-Z])/.test(password)) {
+            failedCriteria.push("at least one uppercase letter");
+        }
+        if (!/(?=.*\d)/.test(password)) {
+          failedCriteria.push("at least one digit");
+      }
+        if (!/(?=.*[!@#$%^&*()_+])/.test(password)) {
+            failedCriteria.push("at least one special character");
+        }
+        if (password.length < 8) {
+            failedCriteria.push("a minimum length of 8 characters");
+        }
+
+        return failedCriteria;
+    }
+
+    return null; // Password passed all criteria
   }
 
-  const verifyUsername = username => {
-    const usernameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
-  }
+  useEffect(() => {
+    if (password === confirmPassword) {
+      setConfirmPasswordError('');
+    } else if (confirmPassword) {
+      setConfirmPasswordError('Passwords do not match');
+    }
+  }, [confirmPassword]);
 
-  const onSubmit = evt => {
+  useEffect(() => {
+    const passwordCheckFails = verifyPassword(password);
+    if (passwordCheckFails && password) {
+      switch (passwordCheckFails.length) {
+        case 1:
+          setPasswordError(`Your password must have ${passwordCheckFails[0]}`);
+          break;
+        case 2:
+          setPasswordError(`Your password must have ${passwordCheckFails[0]} and ${passwordCheckFails[1]}`);
+          break;
+        default:
+          setPasswordError(`Your password must have ${passwordCheckFails.slice(0, -1).join(", ") + ", and " + passwordCheckFails[passwordCheckFails.length - 1]}`);
+      }
+    } else {
+      setPasswordError('');
+    }
+  }, [password]);
+
+  const onSubmit = async evt => {
     evt.preventDefault();
+
+    const emailTaken = await fetch(`http://127.0.0.1/api/get_user_email/${email}`);
+    const usernameTaken = await fetch(`http://127.0.0.1/api/get_user_username/${username}`);
+
+    // Checking email and username validities
+    if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid E-Mail address');
+    } else if (emailTaken) {
+      setEmailError('The provided E-Mail address is already in use');
+    } else {
+      setEmailError('');
+    }
+    if (!usernameRegex.test(username)) {
+      setUsernameError('Your username must be between 3-16 characters and contain no special characters except "-" and/or "_"');
+    } else if (usernameTaken) {
+      setUsernameError('The provided username is already taken');
+    } else {
+      setUsernameError('');
+    }
+
+    // If any of the fields below are actually empty
+    if (!email || !username || !password || !confirmPassword) {
+      if (!email) {
+        setEmailError('Please enter an E-Mail address');
+      }
+      if (!username) {
+        setUsernameError('Please enter a username');
+      }
+      if (!password) {
+        setPasswordError('Please enter a password');
+      }
+      if (!confirmPassword) {
+        if (!password) {
+          setConfirmPasswordError('Please enter a password');
+        } else if (passwordError) {
+          setConfirmPasswordError('Please enter a valid password');
+        } else {
+          setConfirmPasswordError('Please confirm your password');
+        }
+      }
+    }
+
+    if (emailError || usernameError || passwordError || confirmPasswordError) {
+      return;
+    }
+
+    const data = {
+      user_id: uuidv4(),
+      username,
+      email,
+      password
+    };
+
+    const apiURL = "http://127.0.0.1:5000/api/create_user";
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }
+
+    const response = await fetch(apiURL, options);
+
+    if (response.status !== 201 && response.status !== 200) {
+      const data = await response.json();
+      alert(data.message);
+    } else {
+      const navigateTo = useNavigate();
+      navigateTo('/login');
+    }
   }
 
   return ( 
@@ -21,23 +152,23 @@ const SignupForm = () => {
       <form onSubmit={onSubmit}>
         <div className="form-row">
           <label>Email</label>
-          <input className="user-form" type="text" id="email"/>
-          <div className='input-error'><img src="./src/assets/error.svg" />AAAAA</div>
+          <input className="user-form" type="text" id="email" value={email} onChange={e => setEmail(e.target.value)} style={emailError ? {borderColor: 'red'} : {}}/>
+          <div className='input-error' style={emailError ? {opacity: '100%'} : {}}><img src="./src/assets/error.svg" />{emailError}</div>
         </div>
         <div className="form-row">
           <label>Username</label>
-          <input className="user-form" type="text" id="username"/>
-          <div className='input-error'><img src="./src/assets/error.svg" />AAAAA</div>
+          <input className="user-form" type="text" id="username" value={username} onChange={e => setUsername(e.target.value)} style={usernameError ? {borderColor: 'red'} : {}}/>
+          <div className='input-error' style={usernameError ? {opacity: '100%'} : {}}><img src="./src/assets/error.svg" />{usernameError}</div>
         </div>
         <div className="form-row">
           <label>Password</label>
-          <input className="user-form" type="password" id="password"/>
-          <div className='input-error'><img src="./src/assets/error.svg" />AAAAA</div>
+          <input className="user-form" type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} style={passwordError ? {borderColor: 'red'} : {}}/>
+          <div className='input-error' style={passwordError ? {opacity: '100%'} : {}}><img src="./src/assets/error.svg" />{passwordError}</div>
         </div>
         <div className="form-row">
           <label>Confirm Password</label>
-          <input className="user-form" type="password"/>
-          <div className='input-error'><img src="./src/assets/error.svg" />AAAAA</div>
+          <input className="user-form" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} style={confirmPasswordError ? {borderColor: 'red'} : {}}/>
+          <div className='input-error' style={confirmPasswordError ? {opacity: '100%'} : {}}><img src="./src/assets/error.svg" />{confirmPasswordError}</div>
         </div>
         <button>Sign Up</button>
       </form>

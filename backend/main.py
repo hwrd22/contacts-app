@@ -49,9 +49,27 @@ def login():
     access_token = create_access_token(identity=user.user_id)
     return jsonify({"message": "Login successful", "access_token": access_token}), 200
   else:
-    return jsonify({"error": "Invalid username or password"}), 401
+    return jsonify({"error": "Invalid username or password", "userExists": user != None, "passwordMatching" : hashed_password == user.password}), 401
   
 
+# Checking for duplicates
+@app.route("/api/get_user_email/<string:email>")
+def get_user_by_email(email):
+  user = User.query.filter_by(email = email).first()
+  if user:
+    return jsonify({"exists": True}), 200
+  return jsonify({"exists": False}), 200
+
+
+@app.route("/api/get_user_username/<string:username>")
+def get_user_by_username(username):
+  user = User.query.filter_by(username = username).first()
+  if user:
+    return jsonify({"exists": True}), 200
+  return jsonify({"exists": False}), 200
+
+
+# Getting User details for the frontend
 @app.route("/api/get_user", methods=["GET"])
 @jwt_required()
 def get_user():
