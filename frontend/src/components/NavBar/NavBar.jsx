@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { getToken, clearToken } from '../../authentication.js';
+import { getToken, clearToken, isTokenExpired } from '../../authentication.js';
 import './NavBar.css';
+import { useEffect } from 'react';
+import AutoLogout from '../../AutoLogout.jsx';
 
 const NavBar = () => {
   const token = getToken();
@@ -12,12 +14,29 @@ const NavBar = () => {
     navigateTo('/login');
   }
 
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    const isExpired = token && isTokenExpired(token);
+    if (isExpired) {
+      localStorage.removeItem('jwtToken');
+      navigateTo('/login');
+    }
+  });
+
   const getUser = async () => {
     if (token) {
+      const options = {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      };
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/get_user', {method: 'GET'});
+        const response = await fetch('http://127.0.0.1:5000/api/get_user', options);
         if (response.status === 200) {
-          console.log(response);
+          const userJson = await response.json();
+          console.log(userJson);
         }
       } catch (err) {
         console.error(err);
@@ -29,7 +48,7 @@ const NavBar = () => {
     <nav className='navbar'>
       <Link to="/">
         <div className='home-link'>
-          <img src='public/contacts.svg' />
+          <img src='/contacts.svg' />
           <h2>Contacts</h2>
         </div>
       </Link>
@@ -45,9 +64,11 @@ const NavBar = () => {
       }
       {token && 
       <div className='links'>
+        <button onClick={getUser}>Click me to output your details in the console</button>
         <div onClick={handleLogout} className='link'>Log Out</div>
       </div>
       }
+      <AutoLogout token={ token }/>
     </nav>
    );
 }

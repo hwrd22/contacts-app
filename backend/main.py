@@ -49,7 +49,7 @@ def login():
   hashed_password = hash_password(password)
   
   if hashed_password == user.password:
-    access_token = create_access_token(identity=user.user_id, expires_delta=timedelta(hours=1))
+    access_token = create_access_token(identity=user.user_id, expires_delta=timedelta(minutes=15))
     return jsonify({"access_token": access_token}), 200
   else:
     return jsonify({"userExists": True, "passwordMatching" : False}), 401
@@ -80,19 +80,23 @@ def get_user_by_username(username=None):
 @app.route("/api/get_user", methods=["GET"])
 @jwt_required()
 def get_user():
-  current_user_id = get_jwt_identity()
-  user = User.query.get(current_user_id)
-  return jsonify({"user": user}), 200
+  token = request.headers.get('Authorization').split(' ')[1]
+  user_id = get_jwt_identity()
+  user = User.query.get(user_id)
+  return jsonify({"user": user.to_json()}), 200
+
+
+# Token Refresh route
+@app.route("/api/refresh", methods=["GET"])
+@jwt_required()
+def refresh_token():
+  token = request.headers.get('Authorization').split(' ')[1]
+  user_id = get_jwt_identity()
+  new_token = create_access_token(identity=user_id, expires_delta=timedelta(minutes=15))
+  return jsonify({'access_token': new_token}), 200
 
 
 # Contact Routes
-@app.route("/api/test/all_contacts", methods=["GET"])
-def get_all_contacts():
-  contacts = Contact.query.all()
-  json_contacts = list(map(lambda x: x.to_json(), contacts))
-  return jsonify({"contacts": json_contacts}), 200
-
-
 @app.route("/api/get_contacts", methods=["POST"])
 @jwt_required()
 def get_contacts():

@@ -1,5 +1,4 @@
 from config import db
-import hashlib
 
 class User(db.Model):
   user_id = db.Column(db.String(36), primary_key = True)
