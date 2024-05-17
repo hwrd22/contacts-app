@@ -1,0 +1,17 @@
+.dialog {
+  border-radius: 8px;
+  font-weight: bold;
+  padding: 32px;
+}
+
+.logout {
+  background-color: rgba(70, 114, 70, 0.25);
+  border: 1px solid rgb(70, 114, 70);
+  color: rgb(106, 165, 106);
+}
+
+.expired {
+  background-color: rgba(114, 70, 70, 0.25);
+  border: 1px solid rgb(114, 70, 70);
+  color: rgb(165, 106, 106);
+}

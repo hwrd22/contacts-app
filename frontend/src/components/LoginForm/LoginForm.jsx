@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.css';
+import LogoutDialog from '../../DialogBox/LogoutDialog';
+import SessionExpiredDialog from '../../DialogBox/SessionExpiredDialog';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -10,6 +12,12 @@ const LoginForm = () => {
   const [passwordError, setPasswordError] = useState('');
 
   const navigateTo = useNavigate();
+
+  const url = new URL(window.location.href);
+  const redirectTerm = url.searchParams.get('redirect');
+
+  const showLogoutDialog = redirectTerm === 'logout';
+  const showExpiredDialog = redirectTerm === 'session_expired';
 
   const redirectToHome = () => {
     navigateTo('/');
@@ -76,8 +84,12 @@ const LoginForm = () => {
     redirectToHome();
   }
 
+  const navigationEntries = window.performance.getEntriesByType('navigation');
+
   return ( 
     <div className='signup-form'>
+      {showLogoutDialog && <LogoutDialog />}
+      {showExpiredDialog && <SessionExpiredDialog />}
       <h1>Log In</h1>
       <form onSubmit={onSubmit}>
         <div className="form-row">

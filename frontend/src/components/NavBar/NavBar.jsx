@@ -3,23 +3,33 @@ import { getToken, clearToken, isTokenExpired } from '../../authentication.js';
 import './NavBar.css';
 import { useEffect } from 'react';
 import AutoLogout from '../../AutoLogout.jsx';
+import IdleTimeout from '../../IdleTimeout.jsx';
 
 const NavBar = () => {
-  const token = getToken();
+  let token = getToken();
 
   const navigateTo = useNavigate();
 
   const handleLogout = () => {
     clearToken();
-    navigateTo('/login');
-  }
+    token = getToken();
+    navigateTo('/login?redirect=logout');
+  };
+
+  // Function to forcibly log out the user if they idle on the page.
+  const timeoutUser = () => {
+    if (getToken()) {
+      clearToken();
+      token = getToken();
+      navigateTo('/login?redirect=session_expired');
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
     const isExpired = token && isTokenExpired(token);
     if (isExpired) {
       localStorage.removeItem('jwtToken');
-      navigateTo('/login');
+      navigateTo('/login?redirect=session_expired');
     }
   });
 
@@ -68,7 +78,8 @@ const NavBar = () => {
         <div onClick={handleLogout} className='link'>Log Out</div>
       </div>
       }
-      <AutoLogout token={ token }/>
+      <AutoLogout token={ token } callback={timeoutUser} />
+      {token && <IdleTimeout timeout={900000} onTimeout={timeoutUser} />}
     </nav>
    );
 }
