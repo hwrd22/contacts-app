@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ContactList from "../ContactList/ContactList";
 import { getToken, getUser } from "../authentication";
+import { Link, useNavigate } from "react-router-dom";
 import './Contacts.css';
 
 const Contacts = () => {
@@ -8,6 +9,8 @@ const Contacts = () => {
   const [user, setUser] = useState(null);
   const [contacts, setContacts] = useState([]);
   const [currentContact, setCurrentContact] = useState({});
+
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     setToken(getToken());
@@ -38,14 +41,19 @@ const Contacts = () => {
     closeModal();
     fetchContacts();
   }
+
+  const addContactClick = () => {
+    navigateTo('/create_contact');
+  }
+
   return ( 
     <>
       <h1 className="contacts-heading">Contacts</h1>
       {contacts.length === 0 ? 
-      <div>You have no contacts. Try adding one by clicking the '+' button!</div> :
+      <div>You have no contacts. <Link to='/create_contact'>Try adding one!</Link></div> :
       <ContactList contacts={contacts} />
       }
-      <button className="add-contact"><img src="./src/assets/add-contact.svg" className="icon" /></button>
+      <button className="add-contact" onClick={addContactClick}><img src="./src/assets/add-contact.svg" className="icon" /></button>
     </>
    );
 }

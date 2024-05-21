@@ -45,6 +45,7 @@ const NavBar = () => {
     if (getToken()) {
       clearToken();
       token = getToken();
+      setIsComponentVisible(false);
       navigateTo('/login?redirect=session_expired');
     }
   };
@@ -53,6 +54,7 @@ const NavBar = () => {
     const isExpired = token && isTokenExpired(token);
     if (isExpired) {
       localStorage.removeItem('jwtToken');
+      setIsComponentVisible(false);
       navigateTo('/login?redirect=session_expired');
     }
   });
@@ -82,7 +84,7 @@ const NavBar = () => {
       {token && 
       <div className='links'>
         {user && <div onClick={toggleComponent} className='link'>{user.username}</div>}
-        {isComponentVisible && <div ref={ref}><MiniProfile user={ user } callback={hideComponent} /></div>}
+        {(token && isComponentVisible) && <div ref={ref}><MiniProfile user={ user } callback={hideComponent} /></div>}
       </div>
       }
       <AutoLogout token={ token } callback={timeoutUser} />

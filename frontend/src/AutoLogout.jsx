@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isTokenExpired, refreshToken } from './authentication'; // Assuming you have a function to check token expiration
+import { getToken, isTokenExpired, refreshToken } from './authentication'; // Assuming you have a function to check token expiration
 
 // Utility Component to check if the user's token is still active
 const AutoLogout = ({ token, callback }) => {
@@ -12,6 +12,7 @@ const AutoLogout = ({ token, callback }) => {
       } else if (token) {
         // User has the page open and still has a valid token
         refreshToken(token);
+        token = getToken();
       }
 
       // Check token expiration every 30 seconds

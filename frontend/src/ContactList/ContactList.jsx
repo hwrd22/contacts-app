@@ -22,17 +22,15 @@ const ContactList = ({contacts/*, updateContact, updateCallback*/}) => {
     <table>
       <thead>
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
+          <th>Name</th>
           <th>E-Mail</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {contacts.map(contact => (
-          <tr key={contact.id}>
-            <td>{contact.firstName}</td>
-            <td>{contact.lastName}</td>
+          <tr key={contact.contact_id}>
+            <td>{contact.nickname ? contact.nickname : contact.firstName + ' ' + contact.lastName}</td>
             <td><a href={`mailto:${contact.email}`}>{contact.email}</a></td>
             <td>
               <button onClick={() => updateContact(contact)}>Update</button>

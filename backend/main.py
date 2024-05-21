@@ -108,15 +108,20 @@ def get_contacts():
 @app.route("/api/create_contact", methods=["POST"])
 @jwt_required()
 def create_contact():
-  contact_id = uuid.uuid4()
+  current_user_id = get_jwt_identity()
+
+  contact_id = str(uuid.uuid4())
   first_name = request.json.get("firstName")
   last_name = request.json.get("lastName")
+  nickname = request.json.get("nickname")
+  phone_number = request.json.get("phoneNumber")
   email = request.json.get("email")
+  company = request.json.get("company")
 
   if not first_name or not last_name or not email:
     return jsonify({"message": "You must include a first name, last name, and email."}), 400
   
-  new_contact = Contact(contact_id = contact_id, first_name = first_name, last_name = last_name, email = email)
+  new_contact = Contact(contact_id = contact_id, first_name = first_name, last_name = last_name, nickname = nickname, phone_number = phone_number , email = email, company = company, user_id = current_user_id)
 
   try:
     db.session.add(new_contact)  # Adding the new contact to the database
@@ -142,7 +147,7 @@ def update_contact(contact_id):
 
   return jsonify({"message": "User updated."}), 200
 
-@app.route("/api/get_email/<string:emailAddress>", methods = ["GET"])
+@app.route("/api/get_contact_email/<string:emailAddress>", methods = ["GET"])
 @jwt_required()
 def check_if_email_exists(emailAddress):
   current_user_id = get_jwt_identity()
