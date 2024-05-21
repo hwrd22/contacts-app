@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './ContactForm.css';
 import { getToken, getUser } from '../authentication';
 
@@ -146,6 +146,7 @@ const ContactForm = () => {
     <div className='signup-form'>
     {user &&
      <>
+     <Link to='/contacts'><div className='back-link'><img className='back-arrow' src='./src/assets/back.svg' /> Back</div></Link>
      <h1 className='form-heading'>Create a new Contact</h1>
       <form onSubmit={onSubmit}>
         <div className="name-row">

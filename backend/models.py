@@ -21,7 +21,7 @@ class Contact(db.Model):
   last_name = db.Column(db.String(80), unique = False, nullable = False)
   nickname = db.Column(db.String(80), unique = False)
   phone_number = db.Column(db.String(10))
-  email = db.Column(db.String(120), unique = True, nullable = False)
+  email = db.Column(db.String(120), nullable = False)
   company = db.Column(db.String(80))
   user_id = db.Column(db.String(36), db.ForeignKey('user.user_id'), nullable=False)
 

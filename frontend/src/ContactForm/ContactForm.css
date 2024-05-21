@@ -1,3 +1,14 @@
+.back-link {
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.back-arrow {
+  height: 1em;
+  margin-right: 4px;
+}
+
 .form-heading {
   text-align: left;
 }
