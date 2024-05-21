@@ -1,0 +1,27 @@
+.heading {
+  font-size: 4rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.profile-card {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  border-left: 6px solid #4f7471;
+  margin: 16px;
+  padding: 16px;
+  text-align: left; 
+}
+
+.card-heading {
+  /* color: rgb(120, 187, 192); */
+  color: rgb(220, 220, 220);
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.plan {
+  color: rgb(120, 187, 192);
+  font-size: 3rem;
+  text-transform: uppercase;
+}

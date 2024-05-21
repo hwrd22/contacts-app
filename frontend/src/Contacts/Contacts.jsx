@@ -1,0 +1,53 @@
+import { useEffect, useState } from "react";
+import ContactList from "../ContactList/ContactList";
+import { getToken, getUser } from "../authentication";
+import './Contacts.css';
+
+const Contacts = () => {
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [currentContact, setCurrentContact] = useState({});
+
+  useEffect(() => {
+    setToken(getToken());
+  });
+
+  useEffect(() => {
+    getUser(token, setUser);
+    fetchContacts();
+  }, [token]);
+  
+  const fetchContacts = async () => {
+    if (token) {
+      const options = {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      };
+      const response = await fetch('http://127.0.0.1:5000/api/get_contacts', options);
+      const data = await response.json();
+      setContacts(data.contacts);
+    }
+    
+  };
+
+  const onUpdate = () => {
+    closeModal();
+    fetchContacts();
+  }
+  return ( 
+    <>
+      <h1 className="contacts-heading">Contacts</h1>
+      {contacts.length === 0 ? 
+      <div>You have no contacts. Try adding one by clicking the '+' button!</div> :
+      <ContactList contacts={contacts} />
+      }
+      <button className="add-contact"><img src="./src/assets/add-contact.svg" className="icon" /></button>
+    </>
+   );
+}
+ 
+export default Contacts;

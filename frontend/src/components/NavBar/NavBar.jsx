@@ -1,20 +1,44 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { getToken, clearToken, isTokenExpired } from '../../authentication.js';
+import { getToken, clearToken, isTokenExpired, getUser } from '../../authentication.js';
 import './NavBar.css';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AutoLogout from '../../AutoLogout.jsx';
 import IdleTimeout from '../../IdleTimeout.jsx';
+import MiniProfile from '../../MiniProfile/MiniProfile.jsx';
 
 const NavBar = () => {
   let token = getToken();
+  const [user, setUser] = useState(null);
+
+  const ref = useRef(null);
+  const [isComponentVisible, setIsComponentVisible] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        // Click is outside the component
+        setIsComponentVisible(false);
+      }
+    };
+
+    // Bind the event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleComponent = () => {
+    setIsComponentVisible(!isComponentVisible);
+  }
+
+  const hideComponent = () => {
+    setIsComponentVisible(false);
+  }
 
   const navigateTo = useNavigate();
-
-  const handleLogout = () => {
-    clearToken();
-    token = getToken();
-    navigateTo('/login?redirect=logout');
-  };
 
   // Function to forcibly log out the user if they idle on the page.
   const timeoutUser = () => {
@@ -33,26 +57,9 @@ const NavBar = () => {
     }
   });
 
-  const getUser = async () => {
-    if (token) {
-      const options = {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      };
-      try {
-        const response = await fetch('http://127.0.0.1:5000/api/get_user', options);
-        if (response.status === 200) {
-          const userJson = await response.json();
-          console.log(userJson);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    } 
-  }
+  useEffect(() => {
+    getUser(token, setUser);
+  }, [token]);
 
   return ( 
     <nav className='navbar'>
@@ -74,8 +81,8 @@ const NavBar = () => {
       }
       {token && 
       <div className='links'>
-        <button onClick={getUser}>Click me to output your details in the console</button>
-        <div onClick={handleLogout} className='link'>Log Out</div>
+        {user && <div onClick={toggleComponent} className='link'>{user.username}</div>}
+        {isComponentVisible && <div ref={ref}><MiniProfile user={ user } callback={hideComponent} /></div>}
       </div>
       }
       <AutoLogout token={ token } callback={timeoutUser} />

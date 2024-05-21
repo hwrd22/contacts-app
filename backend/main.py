@@ -97,7 +97,7 @@ def refresh_token():
 
 
 # Contact Routes
-@app.route("/api/get_contacts", methods=["POST"])
+@app.route("/api/get_contacts", methods=["GET"])
 @jwt_required()
 def get_contacts():
   current_user_id = get_jwt_identity()

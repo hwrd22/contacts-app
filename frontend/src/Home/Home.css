@@ -1,0 +1,26 @@
+.home {
+  background-image: url('../assets/background.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 64px;
+  box-shadow: 0px 4px 4px 0px #00000040,inset 0 0 0 1000px rgba(0,0,0,.6);
+  padding: 128px 0px;
+}
+
+h1 {
+  font-size: 5rem;
+  text-align: center;
+}
+
+.description {
+  font-size: 1.5rem;
+}
+
+.home-button {
+  border-radius: 255px;
+  margin: 16px 8px;
+}

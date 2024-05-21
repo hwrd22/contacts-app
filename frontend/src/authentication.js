@@ -46,3 +46,24 @@ export const refreshToken = async token => {
     }
   }
 };
+
+export const getUser = async (token, callback) => {
+  if (token) {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    };
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/get_user', options);
+      if (response.status === 200) {
+        const userJson = await response.json();
+        callback(userJson.user);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } 
+}

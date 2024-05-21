@@ -55,3 +55,7 @@ form {
   margin-bottom: 4px;
   user-select: none;
 }
+
+.alt-option {
+  margin: 8px;
+}

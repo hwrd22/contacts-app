@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import './SignupForm.css';
 
@@ -199,6 +199,7 @@ const SignupForm = () => {
         </div>
         <button>Sign Up</button>
       </form>
+      <div className='alt-option'>Returning user? Please <Link to='/login'>log in</Link>.</div>
     </div>
    );
 }

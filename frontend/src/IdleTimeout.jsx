@@ -20,6 +20,7 @@ const IdleTimeout = ({ timeout, onTimeout }) => {
     };
 
     const onUserActivity = () => {
+      console.log('An input was detected. Resetting timer');
       resetTimer();
     };
 

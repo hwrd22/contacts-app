@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginForm.css';
 import LogoutDialog from '../../DialogBox/LogoutDialog';
 import SessionExpiredDialog from '../../DialogBox/SessionExpiredDialog';
@@ -104,6 +104,7 @@ const LoginForm = () => {
         </div>
         <button>Log In</button>
       </form>
+      <div className='alt-option'>Don't have an account? <Link to='/register'>Create one here</Link>!</div>
     </div>
    );
 }
