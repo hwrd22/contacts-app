@@ -6,7 +6,7 @@ import { getToken, isTokenExpired, refreshToken } from './authentication'; // As
 const AutoLogout = ({ token, callback }) => {
   useEffect(() => {
     const checkTokenExpiration = () => {
-      if (token && isTokenExpired(token)) {
+      if (token && isTokenExpired()) {
         // Log out user
         callback();
       } else if (token) {
@@ -14,13 +14,12 @@ const AutoLogout = ({ token, callback }) => {
         refreshToken(token);
         token = getToken();
       }
-
-      // Check token expiration every 30 seconds
-      const intervalId = setInterval(checkTokenExpiration, 30000);
-
-      // Cleanup function to clear the interval when component unmounts
-      return () => clearInterval(intervalId);
     }
+    // Check token expiration every 30 seconds
+    const intervalId = setInterval(checkTokenExpiration, 30000);
+
+    // Cleanup function to clear the interval when component unmounts
+    return () => clearInterval(intervalId);
   }, [token, useNavigate]);
 
   // This isn't supposed to render anything and is more of a background check

@@ -53,7 +53,12 @@ const Contacts = () => {
       <div>You have no contacts. <Link to='/create_contact'>Try adding one!</Link></div> :
       <ContactList contacts={contacts} />
       }
-      <button className="add-contact" onClick={addContactClick}><img src="./src/assets/add-contact.svg" className="icon" /></button>
+      <div className="add-contact-container">
+        <button className="add-contact" onClick={addContactClick}>
+          <img src="./src/assets/add-contact.svg" className="icon" />
+        </button>
+        <div className="add-contact-tooltip">Add Contact</div>
+      </div>
     </>
    );
 }

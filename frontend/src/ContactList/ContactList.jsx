@@ -30,8 +30,11 @@ const ContactList = ({contacts/*, updateContact, updateCallback*/}) => {
       <tbody>
         {contacts.map(contact => (
           <tr key={contact.contact_id}>
-            <td>{contact.nickname ? contact.nickname : contact.firstName + ' ' + contact.lastName}</td>
-            <td><a href={`mailto:${contact.email}`}>{contact.email}</a></td>
+            <td>
+              <div className="main-content">{contact.nickname ? contact.nickname : contact.firstName + ' ' + contact.lastName}</div>
+              <div className="company-text">{contact.company}</div>
+            </td>
+            <td><a href={`mailto:${contact.email}`} className="main-content">{contact.email}</a></td>
             <td>
               <button onClick={() => updateContact(contact)}>Update</button>
               <button onClick={() => onDelete(contact.id)}>Delete</button>

@@ -51,7 +51,7 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    const isExpired = token && isTokenExpired(token);
+    const isExpired = token && isTokenExpired();
     if (isExpired) {
       localStorage.removeItem('jwtToken');
       setIsComponentVisible(false);

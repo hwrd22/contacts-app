@@ -1,0 +1,14 @@
+table {
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 32px 8px;
+}
+
+.main-content {
+  font-size: 1.25rem;
+}
+
+.company-text {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}

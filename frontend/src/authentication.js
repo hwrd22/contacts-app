@@ -7,7 +7,8 @@ export const clearToken = () => {
   localStorage.removeItem('jwtToken');
 };
 
-export const isTokenExpired = (token) => {
+export const isTokenExpired = () => {
+  const token = getToken();
   if (!token) {
     // Token is missing
     return true;

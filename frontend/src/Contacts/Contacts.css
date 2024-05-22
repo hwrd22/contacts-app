@@ -2,20 +2,41 @@
   text-align: left;
 }
 
+.add-contact-container {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+}
+
 .add-contact {
   background-color: rgba(255, 255, 255, 0.08);
   border-radius: 255px;
   height: 86px;
   width: 86px;
   padding: 16px;
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
+  position: relative;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
 }
 
 .add-contact:focus {
   outline: none;
+}
+
+.add-contact-tooltip {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 4px 8px;
+  position: absolute;
+  top: -36px;
+  right: -8px;
+  width: max-content;
+  opacity: 0;
+  user-select: none;
+  transition: opacity 0.15s linear;
+}
+
+.add-contact-container:hover .add-contact-tooltip {
+  opacity: 1;
 }
 
 .icon {

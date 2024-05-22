@@ -143,7 +143,7 @@ const ContactForm = () => {
   const navigationEntries = window.performance.getEntriesByType('navigation');
 
   return ( 
-    <div className='signup-form'>
+    <div className='contact-form'>
     {user &&
      <>
      <Link to='/contacts'><div className='back-link'><img className='back-arrow' src='./src/assets/back.svg' /> Back</div></Link>
