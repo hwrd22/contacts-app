@@ -38,7 +38,7 @@ const Contacts = () => {
   };
 
   const onUpdate = () => {
-    closeModal();
+    // closeModal();
     fetchContacts();
   }
 
@@ -51,7 +51,7 @@ const Contacts = () => {
       <h1 className="contacts-heading">Contacts</h1>
       {contacts.length === 0 ? 
       <div>You have no contacts. <Link to='/create_contact'>Try adding one!</Link></div> :
-      <ContactList contacts={contacts} />
+      <ContactList contacts={contacts} updateCallback={onUpdate} />
       }
       <div className="add-contact-container">
         <button className="add-contact" onClick={addContactClick}>

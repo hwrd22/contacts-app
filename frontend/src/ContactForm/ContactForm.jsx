@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './ContactForm.css';
 import { getToken, getUser } from '../authentication';
 
 const ContactForm = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [company, setCompany] = useState('');
+  const location = useLocation();
+  const existingContact = location.state || {};
+  const existingEmail = existingContact.email || null;
+
+  const [firstName, setFirstName] = useState(existingContact.firstName || '');
+  const [lastName, setLastName] = useState(existingContact.lastName || '');
+  const [nickname, setNickname] = useState(existingContact.nickname || '');
+  const [email, setEmail] = useState(existingContact.email || '');
+  const [phoneNumber, setPhoneNumber] = useState(existingContact.phoneNumber || '');
+  const [company, setCompany] = useState(existingContact.company || '');
   const [token, setToken] = useState(getToken());
   const [user, setUser] = useState(null);
 
@@ -26,6 +30,13 @@ const ContactForm = () => {
   useEffect(() => {
     getUser(token, setUser);
   }, [token]);
+
+  const clearErrors = () => {
+    setFirstNameError('');
+    setLastNameError('');
+    setEmailError('');
+    setPhoneNumberError('');
+  }
 
   const redirectToContacts = () => {
     navigateTo('/contacts');
@@ -45,6 +56,8 @@ const ContactForm = () => {
     let error = false;
     let emailTaken = false;
 
+    clearErrors();
+
     const options = {
       method: 'GET',
       headers: {
@@ -53,7 +66,7 @@ const ContactForm = () => {
       }
     };
 
-    if (email) {
+    if (!(existingEmail == email) && email) {
       const emailResponse = await fetch(`http://127.0.0.1:5000/api/get_contact_email/${email}`, options);
       if (emailResponse.ok) {
         const emailJson = await emailResponse.json();
@@ -105,10 +118,7 @@ const ContactForm = () => {
       return;
     }
 
-    setFirstNameError('');
-    setLastNameError('');
-    setEmailError('');
-    setPhoneNumberError('');
+    clearErrors();
 
     const data = {
       firstName,
@@ -119,9 +129,9 @@ const ContactForm = () => {
       company
     };
 
-    const apiURL = "http://127.0.0.1:5000/api/create_contact";
+    const apiURL = "http://127.0.0.1:5000/api/" + (existingContact.contact_id ? `update_contact/${existingContact.contact_id}` : `create_contact`);
     const contactOptions = {
-      method: 'POST',
+      method: existingContact.contact_id ? 'PATCH' : 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -135,7 +145,6 @@ const ContactForm = () => {
       const data = await response.json();
       alert(data.message);
     } else {
-      console.log('Success!');
       redirectToContacts();
     }
   }
@@ -147,7 +156,7 @@ const ContactForm = () => {
     {user &&
      <>
      <Link to='/contacts'><div className='back-link'><img className='back-arrow' src='./src/assets/back.svg' /> Back</div></Link>
-     <h1 className='form-heading'>Create a new Contact</h1>
+     <h1 className='form-heading'>{existingContact.contact_id ? 'Edit an existing' : 'Create a new'} Contact</h1>
       <form onSubmit={onSubmit}>
         <div className="name-row">
           <div className='form-row'>
@@ -182,7 +191,7 @@ const ContactForm = () => {
           <label>Company (Optional)</label>
           <input className="user-form" type="text" id="company" value={company} onChange={e => setCompany(e.target.value)}/>
         </div>
-        <button>Create Contact</button>
+        <button>{existingContact.contact_id ? 'Update' : 'Create'} Contact</button>
       </form>
      </> 
     }

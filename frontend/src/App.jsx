@@ -33,6 +33,7 @@ function App() {
           <Route path="/profile" element={<Profile user={ user } />} />
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/create_contact" element={<ContactForm />} />
+          <Route path="/edit_contact" element={<ContactForm />} />
           <Route path="*" element={<Dummy />} />
         </Routes>
       </div>

@@ -141,7 +141,10 @@ def update_contact(contact_id):
   data = request.json
   contact.first_name = data.get("firstName", contact.first_name)  # Checks if the contact's first name was changed. If so, use that value. Else, stick with the existing one.
   contact.last_name = data.get("lastName", contact.last_name)
+  contact.nickname = data.get("nickname", contact.nickname)
+  contact.phone_number = data.get("phoneNumber", contact.phone_number)
   contact.email = data.get("email", contact.email)
+  contact.company = data.get("company", contact.company)
 
   db.session.commit()
 

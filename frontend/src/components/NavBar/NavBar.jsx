@@ -63,6 +63,10 @@ const NavBar = () => {
     getUser(token, setUser);
   }, [token]);
 
+  useEffect(() => {
+    token = getToken();
+  });
+
   return ( 
     <nav className='navbar'>
       <Link to="/">
