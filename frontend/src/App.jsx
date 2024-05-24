@@ -10,9 +10,11 @@ import { getToken, getUser } from './authentication';
 import Home from './Home/Home';
 import Contacts from './Contacts/Contacts';
 import ContactForm from './ContactForm/ContactForm';
+import ContactView from './ContactView/ContactView';
+import RedirectToHome from './RedirectToHome';
 
 function App() {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(getToken());
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -28,16 +30,17 @@ function App() {
       <div className='content'>
         <Routes>
           <Route exact path="/" element={<Home token={ token } />} />
-          <Route exact path="/register" element={<SignupForm />} />
-          <Route exact path="/login" element={<LoginForm />} />
-          <Route path="/profile" element={<Profile user={ user } />} />
-          <Route path="/contacts" element={<Contacts />} />
-          <Route path="/create_contact" element={<ContactForm />} />
-          <Route path="/edit_contact" element={<ContactForm />} />
+          <Route exact path="/register" element={!token ? <SignupForm /> : <RedirectToHome />} />
+          <Route exact path="/login" element={!token ? <LoginForm tokenCallback={setToken} /> : <RedirectToHome />} />
+          <Route path="/profile" element={token ? <Profile user={ user } /> : <Dummy />} />
+          <Route path="/contacts" element={token ? <Contacts /> : <Dummy />} />
+          <Route path="/create_contact" element={token ? <ContactForm /> : <Dummy />} />
+          <Route path="/edit_contact" element={token ? <ContactForm /> : <Dummy />} />
+          <Route path="/contact" element={token ? <ContactView /> : <Dummy />} />
           <Route path="*" element={<Dummy />} />
         </Routes>
       </div>
-      <NavBar />
+      <NavBar tokenCallback={setToken} />
     </Router>
   )
 }

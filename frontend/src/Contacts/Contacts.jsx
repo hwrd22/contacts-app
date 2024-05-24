@@ -8,7 +8,6 @@ const Contacts = () => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [contacts, setContacts] = useState([]);
-  const [currentContact, setCurrentContact] = useState({});
 
   const navigateTo = useNavigate();
 

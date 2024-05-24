@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './LoginForm.css';
 import LogoutDialog from '../../DialogBox/LogoutDialog';
 import SessionExpiredDialog from '../../DialogBox/SessionExpiredDialog';
+import { getToken } from '../../authentication';
+import './LoginForm.css';
 
-const LoginForm = () => {
+const LoginForm = ({tokenCallback}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,6 +21,7 @@ const LoginForm = () => {
   const showExpiredDialog = redirectTerm === 'session_expired';
 
   const redirectToHome = () => {
+    tokenCallback(getToken());
     navigateTo('/');
   }
 

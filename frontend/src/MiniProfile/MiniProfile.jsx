@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import { clearToken } from '../authentication';
+import { clearToken, getToken } from '../authentication';
 import './MiniProfile.css';
 
-const MiniProfile = ({ user, callback }) => {
+const MiniProfile = ({ user, callback, tokenCallback }) => {
   const navigateTo = useNavigate();
 
   const handleLogout = () => {
     clearToken();
     // token = getToken();
+    tokenCallback(getToken());
     navigateTo('/login?redirect=logout');
     callback();
   };

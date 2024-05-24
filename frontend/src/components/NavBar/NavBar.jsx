@@ -6,7 +6,7 @@ import AutoLogout from '../../AutoLogout.jsx';
 import IdleTimeout from '../../IdleTimeout.jsx';
 import MiniProfile from '../../MiniProfile/MiniProfile.jsx';
 
-const NavBar = () => {
+const NavBar = ({ tokenCallback }) => {
   let token = getToken();
   const [user, setUser] = useState(null);
 
@@ -46,6 +46,7 @@ const NavBar = () => {
       clearToken();
       token = getToken();
       setIsComponentVisible(false);
+      tokenCallback(getToken());
       navigateTo('/login?redirect=session_expired');
     }
   };
@@ -55,6 +56,7 @@ const NavBar = () => {
     if (isExpired) {
       localStorage.removeItem('jwtToken');
       setIsComponentVisible(false);
+      tokenCallback(getToken());
       navigateTo('/login?redirect=session_expired');
     }
   });
@@ -88,10 +90,10 @@ const NavBar = () => {
       {token && 
       <div className='links'>
         {user && <div onClick={toggleComponent} className='link'>{user.username}</div>}
-        {(token && isComponentVisible) && <div ref={ref}><MiniProfile user={ user } callback={hideComponent} /></div>}
+        {(token && isComponentVisible) && <div ref={ref}><MiniProfile user={ user } callback={hideComponent} tokenCallback={tokenCallback} /></div>}
       </div>
       }
-      <AutoLogout token={ token } callback={timeoutUser} />
+      <AutoLogout token={ token } callback={timeoutUser} tokenCallback={tokenCallback} />
       {token && <IdleTimeout timeout={900000} onTimeout={timeoutUser} />}
     </nav>
    );
