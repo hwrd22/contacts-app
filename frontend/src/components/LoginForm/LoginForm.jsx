@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import LogoutDialog from '../../DialogBox/LogoutDialog';
-import SessionExpiredDialog from '../../DialogBox/SessionExpiredDialog';
+import LogoutDialog from '../DialogBox/LogoutDialog';
+import SessionExpiredDialog from '../DialogBox/SessionExpiredDialog';
 import { getToken } from '../../authentication';
 import './LoginForm.css';
 

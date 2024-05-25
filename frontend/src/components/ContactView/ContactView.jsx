@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import RedirectToHome from "../RedirectToHome";
+import RedirectToHome from "../../RedirectToHome";
 import { useState } from "react";
 import './ContactView.css';
 

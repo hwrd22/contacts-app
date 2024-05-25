@@ -5,12 +5,12 @@ import NavBar from './components/NavBar/NavBar';
 import SignupForm from './components/SignupForm/SignupForm';
 import LoginForm from './components/LoginForm/LoginForm';
 import Dummy from './Dummy';
-import Profile from './Profile/Profile';
+import Profile from './components/Profile/Profile';
 import { getToken, getUser } from './authentication';
-import Home from './Home/Home';
-import Contacts from './Contacts/Contacts';
-import ContactForm from './ContactForm/ContactForm';
-import ContactView from './ContactView/ContactView';
+import Home from './components/Home/Home';
+import Contacts from './components/Contacts/Contacts';
+import ContactForm from './components/ContactForm/ContactForm';
+import ContactView from './components/ContactView/ContactView';
 import RedirectToHome from './RedirectToHome';
 
 function App() {

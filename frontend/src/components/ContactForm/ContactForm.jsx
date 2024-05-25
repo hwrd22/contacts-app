@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './ContactForm.css';
-import { getToken, getUser } from '../authentication';
+import { getToken, getUser } from '../../authentication';
 
 const ContactForm = () => {
   const location = useLocation();

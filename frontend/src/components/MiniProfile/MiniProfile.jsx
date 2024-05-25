@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { clearToken, getToken } from '../authentication';
+import { clearToken, getToken } from '../../authentication';
 import './MiniProfile.css';
 
 const MiniProfile = ({ user, callback, tokenCallback }) => {

@@ -4,7 +4,7 @@ import './NavBar.css';
 import { useEffect, useRef, useState } from 'react';
 import AutoLogout from '../../AutoLogout.jsx';
 import IdleTimeout from '../../IdleTimeout.jsx';
-import MiniProfile from '../../MiniProfile/MiniProfile.jsx';
+import MiniProfile from '../MiniProfile/MiniProfile.jsx';
 
 const NavBar = ({ tokenCallback }) => {
   let token = getToken();

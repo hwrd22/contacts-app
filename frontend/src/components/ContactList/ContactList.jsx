@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getToken } from "../authentication";
+import { getToken } from "../../authentication";
 import './ContactList.css';
 
 const ContactList = ({contacts, updateCallback}) => {

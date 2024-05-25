@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Dummy from "../Dummy";
-import { getToken, getUser } from "../authentication";
+import Dummy from "../../Dummy";
+import { getToken, getUser } from "../../authentication";
 import './Profile.css'
 
 const Profile = ({  }) => {

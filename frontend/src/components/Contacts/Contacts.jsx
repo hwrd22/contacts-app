@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ContactList from "../ContactList/ContactList";
-import { getToken, getUser } from "../authentication";
+import { getToken, getUser } from "../../authentication";
 import { Link, useNavigate } from "react-router-dom";
 import './Contacts.css';
 
