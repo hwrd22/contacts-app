@@ -2,6 +2,10 @@
   width: max-content;
 }
 
+.go-back-link {
+  cursor: pointer;
+}
+
 .back-link {
   display: flex;
   align-items: center;

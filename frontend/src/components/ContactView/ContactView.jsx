@@ -32,6 +32,7 @@ const ContactView = () => {
   };
 
   const editContact = () => {
+    contact.prevPage = '/contact';
     navigateTo('/edit_contact', {state: contact});
   }
 

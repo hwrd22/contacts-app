@@ -35,6 +35,7 @@ const ContactList = ({contacts, updateCallback}) => {
   }
 
   const editContact = contact => {
+    contact.prevPage = '/contacts';
     navigateTo('/edit_contact', {state: contact});
   }
 
