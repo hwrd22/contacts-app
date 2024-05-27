@@ -1,17 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { clearToken, getToken } from '../../authentication';
 import './MiniProfile.css';
 
-const MiniProfile = ({ user, callback, tokenCallback }) => {
+const MiniProfile = ({ user, callback, onLogout }) => {
   const navigateTo = useNavigate();
-
-  const handleLogout = () => {
-    clearToken();
-    // token = getToken();
-    tokenCallback(getToken());
-    navigateTo('/login?redirect=logout');
-    callback();
-  };
 
   const goToProfile = () => {
     navigateTo('/profile');
@@ -27,7 +18,7 @@ const MiniProfile = ({ user, callback, tokenCallback }) => {
       <div className="username">{user.username}</div>
       <div className="email">{user.email}</div>
       <div><button onClick={goToProfile} className='mini-profile-button'>View Profile</button></div>
-      <div><button onClick={handleLogout} className='mini-profile-button'>Log out</button></div>
+      <div><button onClick={onLogout} className='mini-profile-button'>Log out</button></div>
     </>
     }
     </div>

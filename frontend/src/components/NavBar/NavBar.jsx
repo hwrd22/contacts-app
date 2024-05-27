@@ -1,13 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { getToken, clearToken, isTokenExpired, getUser } from '../../authentication.js';
-import './NavBar.css';
 import { useEffect, useRef, useState } from 'react';
 import AutoLogout from '../../AutoLogout.jsx';
 import IdleTimeout from '../../IdleTimeout.jsx';
 import MiniProfile from '../MiniProfile/MiniProfile.jsx';
+import './NavBar.css';
 
 const NavBar = ({ tokenCallback }) => {
-  let token = getToken();
+  const [token, setToken] = useState(getToken());
   const [user, setUser] = useState(null);
 
   const ref = useRef(null);
@@ -42,13 +42,22 @@ const NavBar = ({ tokenCallback }) => {
 
   // Function to forcibly log out the user if they idle on the page.
   const timeoutUser = () => {
-    if (getToken()) {
+    if (token) {
+      console.log(new Date().toTimeString());
       clearToken();
-      token = getToken();
+      setToken(getToken());
       setIsComponentVisible(false);
       tokenCallback(getToken());
       navigateTo('/login?redirect=session_expired');
     }
+  };
+
+  const handleLogout = () => {
+    clearToken();
+    setToken(null);
+    tokenCallback(getToken());
+    navigateTo('/login?redirect=logout');
+    hideComponent();
   };
 
   useEffect(() => {
@@ -66,7 +75,7 @@ const NavBar = ({ tokenCallback }) => {
   }, [token]);
 
   useEffect(() => {
-    token = getToken();
+    setToken(getToken());
   });
 
   return ( 
@@ -90,11 +99,11 @@ const NavBar = ({ tokenCallback }) => {
       {token && 
       <div className='links'>
         {user && <div onClick={toggleComponent} className='link'>{user.username}</div>}
-        {(token && isComponentVisible) && <div ref={ref}><MiniProfile user={ user } callback={hideComponent} tokenCallback={tokenCallback} /></div>}
+        {(token && isComponentVisible) && <div ref={ref}><MiniProfile user={ user } onLogout={handleLogout} callback={hideComponent} /></div>}
       </div>
       }
-      <AutoLogout token={ token } callback={timeoutUser} tokenCallback={tokenCallback} />
-      {token && <IdleTimeout timeout={900000} onTimeout={timeoutUser} />}
+      {token && <AutoLogout callback={timeoutUser} tokenCallback={tokenCallback} />}
+      {token && <IdleTimeout onTimeout={timeoutUser} />}
     </nav>
    );
 }

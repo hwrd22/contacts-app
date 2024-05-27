@@ -11,7 +11,7 @@ export const isTokenExpired = () => {
   const token = getToken();
   if (!token) {
     // Token is missing
-    return true;
+    return false;  // There's no token. Why would it be expired? There's no token TO expire.
   }
 
   try {

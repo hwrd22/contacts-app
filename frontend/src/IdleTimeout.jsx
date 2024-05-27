@@ -1,48 +1,42 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
-const IdleTimeout = ({ timeout, onTimeout }) => {
-  const idleTimer = useRef(null);
+const IdleTimeout = ({ onTimeout }) => {
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
-    const resetTimer = () => {
-      if (idleTimer.current) {
-        clearTimeout(idleTimer.current);
+    const handleUserActivity = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
-      // Logs out the user after 15 minutes of idling
-      idleTimer.current = setTimeout(onTimeout, timeout);
+      // Set a new timeout
+      timeoutRef.current = setTimeout(() => {
+        onTimeout();
+      }, 15 * 60 * 1000); // 15 minutes
     };
 
-    const clearTimer = () => {
-      if (idleTimer.current) {
-        clearTimeout(idleTimer);
-        idleTimer.current = null;
-      }
-    };
+    // Add event listeners
+    document.addEventListener('mousemove', handleUserActivity);
+    document.addEventListener('keydown', handleUserActivity);
+    document.addEventListener('scroll', handleUserActivity);
+    document.addEventListener('click', handleUserActivity);
 
-    const onUserActivity = () => {
-      console.log('An input was detected. Resetting timer');
-      resetTimer();
-    };
+    // Set the initial timeout
+    handleUserActivity();
 
-    const onVisibilityChange = () => {
-      document.visibilityState === 'visible' ? resetTimer() : clearTimer();
-    };
-
-    document.addEventListener('mousemove', onUserActivity);
-    document.addEventListener('keydown', onUserActivity);
-    document.addEventListener('visibilitychange', onVisibilityChange);
-
-    resetTimer();
-
+    // Cleanup function
     return () => {
-      document.removeEventListener('mousemove', onUserActivity);
-      document.removeEventListener('keydown', onUserActivity);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-    }
-  }, [timeout, idleTimer, onTimeout]);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      document.removeEventListener('mousemove', handleUserActivity);
+      document.removeEventListener('keydown', handleUserActivity);
+      document.removeEventListener('scroll', handleUserActivity);
+      document.removeEventListener('click', handleUserActivity);
+      console.log('Event listeners removed.');
+    };
+  }, []);
 
+  return null; // This component doesn't render anything
+};
 
-  return null;
-}
- 
 export default IdleTimeout;
