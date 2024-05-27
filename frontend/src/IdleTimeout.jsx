@@ -32,7 +32,6 @@ const IdleTimeout = ({ onTimeout }) => {
       document.removeEventListener('keydown', handleUserActivity);
       document.removeEventListener('scroll', handleUserActivity);
       document.removeEventListener('click', handleUserActivity);
-      console.log('Event listeners removed.');
     };
   }, []);
 

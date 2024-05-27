@@ -9,7 +9,7 @@ const Profile = ({  }) => {
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [contacts, setContacts] = useState([]);
+  const [numContacts, setNumContacts] = useState(0);
   const maxContacts = 100;  // If I were to theoretically make a paid subscription for this app, this line would be different.
 
   useEffect(() => {
@@ -39,10 +39,13 @@ const Profile = ({  }) => {
       };
       const response = await fetch('http://127.0.0.1:5000/api/get_contacts', options);
       const data = await response.json();
-      setContacts(data.contacts);
+      setNumContacts(data.contacts.length);
     }
-    
   };
+
+  const editProfile = () => {
+    navigateTo('/edit_profile', {state: user});
+  }
 
   const obfuscatedEmail = obfuscateEmail();
   
@@ -57,6 +60,12 @@ const Profile = ({  }) => {
               <div className='image-container'><img className='mini-icon' src='./src/assets/avatar.svg'/></div>
               <div className="mini-username">{user.username}</div>
             </div>
+            <div className="profile-options-container">
+              <div className="options">
+                <div className="profile-option selected"><img src="./src/assets/profile.svg" className="option-icon"/> Profile</div>
+                <div className="profile-option" onClick={editProfile}><img src="./src/assets/edit.svg" className="option-icon"/> Edit Profile</div>
+              </div>
+            </div>
           </div>
           <div className="detailed-container">
             <div className="profile-card">
@@ -67,7 +76,7 @@ const Profile = ({  }) => {
             <div className="double-column">
               <div className="profile-card">
                 <div className="card-heading">Stored contacts</div>
-                <div>{contacts.length || 0} / {maxContacts}</div>
+                <div>{numContacts || 0} / {maxContacts}</div>
                 <button className="view-contacts" onClick={() => navigateTo('/contacts')}><img src="./src/assets/view.svg" className="edit-icon" />View</button>
               </div>
               <div className="profile-card">

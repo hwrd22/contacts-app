@@ -7,14 +7,11 @@ const AutoLogout = ({ callback, tokenCallback }) => {
 
   useEffect(() => {
     const checkTokenExpiration = () => {
-      console.log('Checking if token is expired...');
       if (token && isTokenExpired()) {
-        console.log('Token expired. Logging user out...');
         // Log out user
         tokenCallback(getToken());
         callback();
       } else if (token) {
-        console.log('Token is not expired. Refreshing to keep user logged in...');
         // User has the page open and still has a valid token
         refreshToken(token);
         setToken(getToken());

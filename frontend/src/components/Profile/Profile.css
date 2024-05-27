@@ -29,6 +29,53 @@
   font-size: 2rem;
 }
 
+.profile-options-container {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  margin: 16px;
+}
+
+.options {
+  padding: 8px 0px;
+}
+
+.profile-option {
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.25em;
+  padding: 16px;
+  padding-left: 20px;
+  user-select: none;
+}
+
+.profile-option:hover {
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-left: 4px solid #4f7471;
+  display: flex;
+  font-size: 1.25em;
+  padding: 16px;
+  user-select: none;
+}
+
+.option-icon {
+  height: 1.25em;
+  margin-right: 16px;
+}
+
+.selected {
+  cursor: default;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-left: 4px solid #4f7471;
+  padding-left: 16px;
+}
+
+.selected:hover {
+  padding-left: 16px;
+}
+
 .profile-card {
   background-color: rgba(255, 255, 255, 0.08);
   border-radius: 8px;
