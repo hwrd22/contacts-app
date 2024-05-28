@@ -68,3 +68,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.page-not-found {
+  place-items: left;
+  text-align: left;
+}
+
+.page-not-found h1 {
+  font-size: 10rem;
+}
