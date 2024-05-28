@@ -67,8 +67,6 @@ def get_user_by_email(email):
 
 @app.route("/api/get_user_username/<string:username>")
 def get_user_by_username(username=None):
-  print(username != '')
-  print(username != None)
   user = User.query.filter_by(username = username).first()
   if user:
     print(user)
