@@ -85,6 +85,38 @@ def get_user():
   user = User.query.get(user_id)
   return jsonify({"user": user.to_json()}), 200
 
+# Checking if password matches for the frontend
+@app.route("/api/check_password", methods=["POST"])
+@jwt_required()
+def check_password():
+  token = request.headers.get('Authorization').split(' ')[1]
+  user_id = get_jwt_identity()
+  user = User.query.get(user_id)
+  password = request.json.get("password")
+  hashed_password = hash_password(password)
+
+  if (hashed_password == user.password):
+    return jsonify({"matches": True}), 200
+
+  return jsonify({"matches": False}), 200
+
+@app.route("/api/update_user", methods=["PATCH"])
+@jwt_required()
+def update_user():
+  token = request.headers.get('Authorization').split(' ')[1]
+  user_id = get_jwt_identity()
+  user = User.query.get(user_id)
+  data = request.json
+  password = data.get("password")
+  if password != "":
+    hashed_password = hash_password(password)
+    user.password = (hashed_password)
+
+  user.username = data.get("username", user.username)
+
+  db.session.commit()
+  return jsonify({"message": "User updated."}), 200
+
 
 # Token Refresh route
 @app.route("/api/refresh", methods=["GET"])
@@ -165,12 +197,12 @@ def check_if_email_exists(emailAddress):
 def delete_contact(contact_id):
   contact = Contact.query.get(contact_id)
   if not contact:
-    return jsonify({"message": "User not found."}), 404
+    return jsonify({"message": "Contact not found."}), 404
   
   db.session.delete(contact)
   db.session.commit()
 
-  return jsonify({"message": "User deleted."}), 200
+  return jsonify({"message": "Contact deleted."}), 200
 
 if __name__ == "__main__":
   with app.app_context():

@@ -24,8 +24,7 @@ const SignupForm = () => {
   }
   
   const verifyPassword = password => {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{8,}$/;
-
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`])[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]{8,}$/;
     let failedCriteria = [];
 
     if (!passwordRegex.test(password)) {
@@ -38,7 +37,7 @@ const SignupForm = () => {
         if (!/(?=.*\d)/.test(password)) {
           failedCriteria.push("at least one digit");
       }
-        if (!/(?=.*[!@#$%^&*()_+])/.test(password)) {
+        if (!/(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`])/.test(password)) {
             failedCriteria.push("at least one special character");
         }
         if (password.length < 8) {
@@ -174,9 +173,9 @@ const SignupForm = () => {
   }
 
   return ( 
-    <div className='signup-form'>
+    <div>
       <h1>Sign Up</h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className='signup-form'>
         <div className="form-row">
           <label>Email</label>
           <input className="user-form" type="text" id="email" value={email} onChange={e => setEmail(e.target.value)} style={emailError ? {borderColor: 'red'} : {}}/>

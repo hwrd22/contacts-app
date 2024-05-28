@@ -45,7 +45,7 @@ const Profile = ({  }) => {
 
   const editProfile = () => {
     navigateTo('/edit_profile', {state: user});
-  }
+  };
 
   const obfuscatedEmail = obfuscateEmail();
   

@@ -12,6 +12,7 @@ import Contacts from './components/Contacts/Contacts';
 import ContactForm from './components/ContactForm/ContactForm';
 import ContactView from './components/ContactView/ContactView';
 import RedirectToHome from './RedirectToHome';
+import ProfileForm from './components/ProfileForm/ProfileForm';
 
 function App() {
   const [token, setToken] = useState(getToken());
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/register" element={!token ? <SignupForm /> : <RedirectToHome />} />
           <Route exact path="/login" element={!token ? <LoginForm tokenCallback={setToken} /> : <RedirectToHome />} />
           <Route path="/profile" element={token ? <Profile user={ user } /> : <Dummy />} />
+          <Route path="/edit_profile" element={token ? <ProfileForm user={ user } tokenCallback={setToken} /> : <Dummy />} />
           <Route path="/contacts" element={token ? <Contacts /> : <Dummy />} />
           <Route path="/create_contact" element={token ? <ContactForm /> : <Dummy />} />
           <Route path="/edit_contact" element={token ? <ContactForm /> : <Dummy />} />

@@ -161,7 +161,7 @@ const ContactForm = () => {
      <>
      <a className='go-back-link' onClick={goBack}><div className='back-link'><img className='back-arrow' src='./src/assets/back.svg' /> Back</div></a>
      <h1 className='form-heading'>{existingContact.contact_id ? 'Edit an existing' : 'Create a new'} Contact</h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className='contact-form-form'>
         <div className="name-row">
           <div className='form-row'>
             <label>First Name</label>

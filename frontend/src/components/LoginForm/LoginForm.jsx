@@ -89,11 +89,11 @@ const LoginForm = ({tokenCallback}) => {
   const navigationEntries = window.performance.getEntriesByType('navigation');
 
   return ( 
-    <div className='signup-form'>
+    <div>
       {showLogoutDialog && <LogoutDialog />}
       {showExpiredDialog && <SessionExpiredDialog />}
       <h1>Log In</h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className='login-form'>
         <div className="form-row">
           <label>Username</label>
           <input className="user-form" type="text" id="username" value={username} onChange={e => setUsername(e.target.value)} style={usernameError ? {borderColor: 'red'} : {}}/>
