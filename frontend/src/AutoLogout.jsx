@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getToken, isTokenExpired, refreshToken } from './authentication'; // Assuming you have a function to check token expiration
+import { getToken, isTokenExpired, refreshToken } from './authentication';
 
 // Utility Component to check if the user's token is still active
 const AutoLogout = ({ callback, tokenCallback }) => {

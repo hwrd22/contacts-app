@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getToken } from '../../authentication';
 import LogoutDialog from '../DialogBox/LogoutDialog';
 import SessionExpiredDialog from '../DialogBox/SessionExpiredDialog';
-import { getToken } from '../../authentication';
 import './LoginForm.css';
 
 const LoginForm = ({tokenCallback}) => {
@@ -85,8 +85,6 @@ const LoginForm = ({tokenCallback}) => {
     localStorage.setItem('jwtToken', data.access_token);
     redirectToHome();
   }
-
-  const navigationEntries = window.performance.getEntriesByType('navigation');
 
   return ( 
     <div>

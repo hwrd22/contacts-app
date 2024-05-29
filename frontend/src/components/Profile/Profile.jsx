@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import Dummy from "../../Dummy";
-import { getToken, getUser } from "../../authentication";
 import { useNavigate } from "react-router-dom";
+import { getToken, getUser } from "../../authentication";
 import './Profile.css';
 
-const Profile = ({  }) => {
+const Profile = () => {
   const navigateTo = useNavigate();
 
   const [token, setToken] = useState(null);
@@ -12,11 +11,19 @@ const Profile = ({  }) => {
   const [numContacts, setNumContacts] = useState(0);
   const maxContacts = 100;  // If I were to theoretically make a paid subscription for this app, this line would be different.
 
+  const [renderPage, setRenderPage] = useState(false);
+
   useEffect(() => {
     setToken(getToken());
     getUser(token, setUser);
     fetchContacts();
   }, [token]);
+
+  useEffect(() => {
+    if (user) {
+      setRenderPage(true);
+    }
+  }, [user]);
 
   const obfuscateEmail = () => {
     if (user) {
@@ -51,7 +58,7 @@ const Profile = ({  }) => {
   
   return ( 
     <>
-      {!token || !user ? <Dummy /> : 
+      {!renderPage ? <div>Loading... Please wait.</div> : 
       <div>
         <div className="heading">Profile</div>
         <div className="profile-flexbox">

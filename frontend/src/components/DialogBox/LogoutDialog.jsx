@@ -1,4 +1,4 @@
-import './DialogBox.css'
+import './DialogBox.css';
 
 const LogoutDialog = () => {
   return ( 

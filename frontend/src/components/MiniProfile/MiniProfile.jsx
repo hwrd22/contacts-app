@@ -9,7 +9,6 @@ const MiniProfile = ({ user, callback, onLogout }) => {
     callback();
   }
 
-
   return ( 
     <div className="mini-card">
     {user && 

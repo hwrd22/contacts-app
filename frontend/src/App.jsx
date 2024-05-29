@@ -1,11 +1,15 @@
+// React hooks
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
+
+// Authentication-related functions
+import { getToken, getUser } from './authentication';
+
+// Compnents
 import NavBar from './components/NavBar/NavBar';
 import SignupForm from './components/SignupForm/SignupForm';
 import LoginForm from './components/LoginForm/LoginForm';
 import Profile from './components/Profile/Profile';
-import { getToken, getUser } from './authentication';
 import Home from './components/Home/Home';
 import Contacts from './components/Contacts/Contacts';
 import ContactForm from './components/ContactForm/ContactForm';
@@ -13,6 +17,9 @@ import ContactView from './components/ContactView/ContactView';
 import RedirectToHome from './RedirectToHome';
 import ProfileForm from './components/ProfileForm/ProfileForm';
 import NotFound from './NotFound';
+
+// CSS Stylesheet
+import './App.css';
 
 function App() {
   const [token, setToken] = useState(getToken());

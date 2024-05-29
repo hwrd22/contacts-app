@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { clearToken, getToken, getUser } from "../../authentication";
-import Dummy from "../../Dummy";
-import { Link, useNavigate } from "react-router-dom";
 
 const ProfileForm = ({tokenCallback}) => {
   const navigateTo = useNavigate();
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+
+  const [renderPage, setRenderPage] = useState(false);
 
   const [username, setUsername] = useState('');
   const [oldPassword, setOldPassword] = useState('');
@@ -29,6 +30,7 @@ const ProfileForm = ({tokenCallback}) => {
   useEffect(() => {
     if (user) {
       setUsername(user.username);
+      setRenderPage(true);
     }
   }, [user]);
 
@@ -209,9 +211,8 @@ const ProfileForm = ({tokenCallback}) => {
 
   return ( 
     <>
-      {!token || !user ? <Dummy /> : 
+      {!renderPage ? <div>Loading... Please wait.</div> : 
       <div>
-        <Link to='/profile'><div className='back-link'><img className='back-arrow' src='./src/assets/back.svg' /> Back</div></Link>
         <div className="heading">Edit Profile</div>
         <div className="profile-flexbox">
           <div className="mini-container">

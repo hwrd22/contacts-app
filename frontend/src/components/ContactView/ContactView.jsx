@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import RedirectToHome from "../../RedirectToHome";
-import { useState } from "react";
 import './ContactView.css';
 
 const ContactView = () => {

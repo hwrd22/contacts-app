@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import './Home.css';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getToken, getUser } from '../../authentication';
+import './Home.css';
 
 const Home = ({/* token */}) => {
   const [token, setToken] = useState(null);

@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getToken, clearToken, isTokenExpired, getUser } from '../../authentication.js';
-import { useEffect, useRef, useState } from 'react';
 import AutoLogout from '../../AutoLogout.jsx';
 import IdleTimeout from '../../IdleTimeout.jsx';
 import MiniProfile from '../MiniProfile/MiniProfile.jsx';

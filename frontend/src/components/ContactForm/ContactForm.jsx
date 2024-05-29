@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './ContactForm.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getToken, getUser } from '../../authentication';
+import './ContactForm.css';
 
 const ContactForm = () => {
   const location = useLocation();
   const existingContact = location.state || {};
   const existingEmail = existingContact.email || null;
+
+  const [renderPage, setRenderPage] = useState(false);
 
   const [firstName, setFirstName] = useState(existingContact.firstName || '');
   const [lastName, setLastName] = useState(existingContact.lastName || '');
@@ -30,6 +32,12 @@ const ContactForm = () => {
   useEffect(() => {
     getUser(token, setUser);
   }, [token]);
+
+  useEffect(() => {
+    if (user) {
+      setRenderPage(true);
+    }
+  }, [user]);
 
   const clearErrors = () => {
     setFirstNameError('');
@@ -153,11 +161,9 @@ const ContactForm = () => {
     !existingContact.contact_id ? navigateTo('/contacts') : navigateTo(existingContact.prevPage, {state: existingContact});
   }
 
-  const navigationEntries = window.performance.getEntriesByType('navigation');
-
   return ( 
     <div className='contact-form'>
-    {user &&
+    {!renderPage ? <div>Loading... Please wait.</div> : user &&
      <>
      <a className='go-back-link' onClick={goBack}><div className='back-link'><img className='back-arrow' src='./src/assets/back.svg' /> Back</div></a>
      <h1 className='form-heading'>{existingContact.contact_id ? 'Edit an existing' : 'Create a new'} Contact</h1>
