@@ -17,6 +17,7 @@ import ContactView from './components/ContactView/ContactView';
 import RedirectToHome from './RedirectToHome';
 import ProfileForm from './components/ProfileForm/ProfileForm';
 import NotFound from './NotFound';
+import Footer from './Footer';
 
 // CSS Stylesheet
 import './App.css';
@@ -35,21 +36,24 @@ function App() {
 
   return (
     <Router>
-      <div className='content'>
-        <Routes>
-          <Route exact path="/" element={<Home token={ token } />} />
-          <Route exact path="/register" element={!token ? <SignupForm /> : <RedirectToHome />} />
-          <Route exact path="/login" element={!token ? <LoginForm tokenCallback={setToken} /> : <RedirectToHome />} />
-          <Route path="/profile" element={token ? <Profile user={ user } /> : <NotFound />} />
-          <Route path="/edit_profile" element={token ? <ProfileForm user={ user } tokenCallback={setToken} /> : <NotFound />} />
-          <Route path="/contacts" element={token ? <Contacts /> : <NotFound />} />
-          <Route path="/create_contact" element={token ? <ContactForm /> : <NotFound />} />
-          <Route path="/edit_contact" element={token ? <ContactForm /> : <NotFound />} />
-          <Route path="/contact" element={token ? <ContactView /> : <NotFound />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <div className='app'>
+        <div className='content'>
+          <Routes>
+            <Route exact path="/" element={<Home token={ token } />} />
+            <Route exact path="/register" element={!token ? <SignupForm /> : <RedirectToHome />} />
+            <Route exact path="/login" element={!token ? <LoginForm tokenCallback={setToken} /> : <RedirectToHome />} />
+            <Route path="/profile" element={token ? <Profile user={ user } /> : <NotFound />} />
+            <Route path="/edit_profile" element={token ? <ProfileForm user={ user } tokenCallback={setToken} /> : <NotFound />} />
+            <Route path="/contacts" element={token ? <Contacts /> : <NotFound />} />
+            <Route path="/create_contact" element={token ? <ContactForm /> : <NotFound />} />
+            <Route path="/edit_contact" element={token ? <ContactForm /> : <NotFound />} />
+            <Route path="/contact" element={token ? <ContactView /> : <NotFound />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+        <NavBar tokenCallback={setToken} />
+        <Footer />
       </div>
-      <NavBar tokenCallback={setToken} />
     </Router>
   )
 }

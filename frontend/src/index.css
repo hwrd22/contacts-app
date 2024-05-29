@@ -11,8 +11,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  height: 9000px;
 }
 
 a {
@@ -76,4 +74,30 @@ button:focus-visible {
 
 .page-not-found h1 {
   font-size: 10rem;
+}
+
+footer {
+  border-top: 1px solid #2c3a36;
+  margin-top: 16px;
+  padding: 16px auto;
+}
+
+.footer-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-column-l {
+  margin-right: 64px;
+}
+
+.footer-column-r {
+  margin-left: 64px;
+}
+
+.separator {
+  color: #999;
+  margin: auto 8px;
+  user-select: none;
 }
