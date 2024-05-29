@@ -101,3 +101,7 @@ footer {
   margin: auto 8px;
   user-select: none;
 }
+
+.privacy-policy {
+  text-align: left;
+}

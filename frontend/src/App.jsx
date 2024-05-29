@@ -18,6 +18,8 @@ import RedirectToHome from './RedirectToHome';
 import ProfileForm from './components/ProfileForm/ProfileForm';
 import NotFound from './NotFound';
 import Footer from './Footer';
+import Privacy from './Privacy';
+import About from './About';
 
 // CSS Stylesheet
 import './App.css';
@@ -48,6 +50,8 @@ function App() {
             <Route path="/create_contact" element={token ? <ContactForm /> : <NotFound />} />
             <Route path="/edit_contact" element={token ? <ContactForm /> : <NotFound />} />
             <Route path="/contact" element={token ? <ContactView /> : <NotFound />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
