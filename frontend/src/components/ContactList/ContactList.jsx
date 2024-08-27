@@ -93,6 +93,7 @@ const ContactList = ({contacts, updateCallback}) => {
           <h2 className="modal-heading">Warning</h2>
           <div className="modal-content">Are you sure you want to delete this contact?</div>
           <div className="contact-to-delete">{currentContact.nickname || currentContact.firstName + ' ' + currentContact.lastName}</div>
+          <div className="modal-content">This action cannot be undone!</div>
           <div className="modal-button-row">
             <button className="cancel-button" onClick={closeModal}>Cancel</button>
             <button className="delete-button" onClick={onDelete}>Delete</button>
