@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getToken, getUser } from "../../authentication";
 import ContactList from "../ContactList/ContactList";

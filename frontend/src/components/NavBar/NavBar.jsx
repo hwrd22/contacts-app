@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getToken, clearToken, isTokenExpired, getUser } from '../../authentication.js';
 import AutoLogout from '../../AutoLogout.jsx';

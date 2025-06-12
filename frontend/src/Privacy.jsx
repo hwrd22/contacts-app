@@ -1,3 +1,5 @@
+import React from "react";
+
 const Privacy = () => {
   // This is mostly here to let the user know that the app does store some information in the SQL database (if this was to actually be published on the web).
   // I have no intention to publish this to the web, and any data stored will instead be saved on the user's computer in the backend's db file. - hwrd22

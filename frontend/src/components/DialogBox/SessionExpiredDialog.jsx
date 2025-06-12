@@ -1,3 +1,4 @@
+import React from 'react';
 import './DialogBox.css';
 
 const SessionExpiredDialog = () => {
